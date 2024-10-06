@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: my_first_package_test
+Version: 0.1
+Summary: Simple test Package
+Author: Priyanka
+Author-email: _
+Description-Content-Type: test/markdown
+License-File: LICENSE.txt
+
+#This is just a Simple ackage
+This just a Simple python package to test 

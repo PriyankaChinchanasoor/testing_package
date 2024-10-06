@@ -1,0 +1,7 @@
+LICENSE.txt
+README.md
+setup.py
+my_first_package_test.egg-info/PKG-INFO
+my_first_package_test.egg-info/SOURCES.txt
+my_first_package_test.egg-info/dependency_links.txt
+my_first_package_test.egg-info/top_level.txt
