@@ -1,4 +1,4 @@
-name: Hello, World!
+name: Publish Python Package to PyPI
 
 on:
   push:
@@ -10,5 +10,44 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Print a message
-        run: echo "Hello, world!"
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12.4  
+
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          
+
+
+      - name: Build   
+ the wheel
+        run: python -m build --wheel .
+
+      - name: Publish to PyPI
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/
+
+      - name: Create PyPI release
+        run: |
+          python -m twine upload --repository pypi dist/*
+          # Replace 'your_pypi_token' with your actual PyPI token
+          # You can generate a token on the PyPI website
+          # under your account settings
+          echo "PYPI_TOKEN=your_pypi_token" >> $GITHUB_ENV
+
+      - name: Delete the artifact
+        uses: actions/delete-artifact@v3
+        with:
+          name: dist
+
+      - name: Commit the changes
+        run: |
+          git add .
+          git commit -m "Publish package to PyPI"
+          git push origin main
