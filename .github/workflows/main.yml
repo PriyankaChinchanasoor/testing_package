@@ -1,11 +1,10 @@
 name: Publish Python Package to PyPI and TestPYPI
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  build:
+  python-build-and-publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -16,9 +15,25 @@ jobs:
           python-version: 3.12  
   
       - name: Install dependencies
-        run: python -m pip install --upgrade pip   
+        run: python -m pip install --upgrade pip  
+             pip install flake8
 
-      - name: Build the wheel
-        run: python -m build --wheel .
+      - name: Lint with flake8
+              flake8 .
+        
+
+      - name: Build binary wheel and source tarball
+        run: python setup.py sdist bdist_wheel
+      - name: Publish to TestPyPI (optional)
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          token: ${{ secrets.TEST }}
+          repository_url: https://testpypi.pypa.io/legacy/
+
       - name: Publish to PyPI
-        run:
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          token: ${{ secrets.Test }}  # Replace with your PyPI token
+          repository_url: https://upload.pypi.org/legacy/
+
+          
